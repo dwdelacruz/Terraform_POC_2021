@@ -1,28 +1,24 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.27"
+    }
+  }
+
+  required_version = ">= 0.14.9"
+}
+
 provider "aws" {
-  region = "us-east-1"
+  profile = "default"
+  region  = "us-east-1"
 }
 
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
-}
-
-resource "aws_instance" "ec2" {
-  ami           = data.aws_ami.ubuntu.id
+resource "aws_instance" "app_server" {
+  ami           = "ami-0d5eff06f840b45e9"
   instance_type = "t1.micro"
 
   tags = {
-    Name = "JaKEeeee"
+    Name = "ExampleAppServerInstance"
   }
 }
